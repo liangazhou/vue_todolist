@@ -8,7 +8,7 @@
             <input id="toggle-all" class="toggle-all" type="checkbox">
             <label for="toggle-all">Mark all as complete</label>
             <ul class="todo-list">
-                <li class="todo" v-for="item in todos" :key="item" :class="{completed: item.completed}"><!--TODO-->
+                <li class="todo" v-for="item in todos" :key="item.index" :class="{completed: item.completed}"><!--TODO-->
                     <div class="view">
                         <input class="toggle" type="checkbox">
                         <label>{{ item.title }}</label>
