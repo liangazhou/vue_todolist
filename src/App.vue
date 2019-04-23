@@ -1,7 +1,7 @@
 <template>
   <div id="app">
       <ul class="todo-list">
-        <li class="todo" v-for="item in todos" :key="item" :class="{completed: item.completed, editing: item.editing}"><!--TODO-->
+        <li class="todo" v-for="item in todos" :key="item" :class="{completed: item.completed}"><!--TODO-->
           <div class="view">
             <input class="toggle" type="checkbox">
             <label>{{ item.title }}</label>
