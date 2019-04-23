@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <div class="todoapp">
         <header class="header">
             <h1>todos</h1>
             <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?">
@@ -29,11 +29,11 @@
             </ul>
             <button class="clear-completed">Clear completed</button>
         </footer>
-        <footer class="info">
-            <p>Double-click to edit a todo</p>
-            <p>Written by <a href="http://evanyou.me">Evan You</a></p>
-            <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
-        </footer>
+<!--        <footer class="info">-->
+<!--            <p>Double-click to edit a todo</p>-->
+<!--            <p>Written by <a href="http://evanyou.me">Evan You</a></p>-->
+<!--            <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>-->
+<!--        </footer>-->
     </div>
 </template>
 
@@ -60,12 +60,12 @@
 </script>
 
 <style>
-    #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
+    /*#app {*/
+    /*    font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
+    /*    -webkit-font-smoothing: antialiased;*/
+    /*    -moz-osx-font-smoothing: grayscale;*/
+    /*    text-align: center;*/
+    /*    color: #2c3e50;*/
+    /*    margin-top: 60px;*/
+    /*}*/
 </style>
