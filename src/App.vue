@@ -1,17 +1,36 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+      <ul class="todo-list">
+        <li class="todo" v-for="item in todos" :key="item" :class="{completed: item.completed, editing: item.editing}"><!--TODO-->
+          <div class="view">
+            <input class="toggle" type="checkbox">
+            <label>{{ item.title }}</label>
+            <button class="destroy"></button>
+          </div>
+          <input class="edit" type="text">
+        </li>
+      </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  data(){
+    return {
+      todos: [{
+        title: '代办 一',
+        completed: true,
+        editing: false,
+      }, {
+        title: '代办 二',
+        completed: false,
+        editing: true,
+      }, {
+        title: '代办 三',
+        completed: false,
+        editing: false,
+      }]
+    }
   }
 }
 </script>
