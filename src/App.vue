@@ -2,19 +2,22 @@
     <div class="todoapp">
         <header class="header">
             <h1>todos</h1>
-            <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?" @keyup.enter="addTodo" v-model="newTodo">
+            <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?"
+                   @keyup.enter="addTodo" v-model="newTodo">
         </header>
         <section class="main">
             <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
             <label for="toggle-all">Mark all as complete</label>
             <ul class="todo-list">
-                <li class="todo" v-for="(item, index) in todos" :key="index" :class="{completed: item.completed, editing: editTodo == index}"><!--TODO-->
+                <li class="todo" v-for="(item, index) in showTodo" :key="index"
+                    :class="{completed: item.completed, editing: editTodo == index}"><!--TODO-->
                     <div class="view">
                         <input class="toggle" type="checkbox" v-model="item.completed">
                         <label @dblclick="editingLabel({'index': index}, $event)">{{ item.title }}</label>
                         <button class="destroy" @click="deleteTodo({'index': index}, $event)"></button>
                     </div>
-                    <input v-todo-focus class="edit" type="text" v-model="item.title" @blur.prevent="finishEditLabel" @keyup.enter="finishEditLabel" @keyup.esc="cancelEditLabel({'index': index}, $event)">
+                    <input v-todo-focus class="edit" type="text" v-model="item.title" @blur.prevent="finishEditLabel"
+                           @keyup.enter="finishEditLabel" @keyup.esc="cancelEditLabel({'index': index}, $event)">
                 </li>
             </ul>
         </section>
@@ -23,17 +26,19 @@
                 <strong>{{allTodo}}</strong> todo
             </span>
             <ul class="filters">
-                <li><a href="#/all" class="selected">All</a></li>
-                <li><a href="#/active">Active</a></li>
-                <li><a href="#/completed">Completed</a></li>
+                <li><a href="#/all" :class="{selected: filter === 'all'}" @click="changeFilter('all')">All</a></li>
+                <li><a href="#/active" :class="{selected: filter === 'active'}"
+                       @click="changeFilter('active')">Active</a></li>
+                <li><a href="#/completed" :class="{selected: filter === 'completed'}"
+                       @click="changeFilter('completed')">Completed</a></li>
             </ul>
             <button class="clear-completed" @click="deleteAllCompleted">Clear completed</button>
         </footer>
-<!--        <footer class="info">-->
-<!--            <p>Double-click to edit a todo</p>-->
-<!--            <p>Written by <a href="http://evanyou.me">Evan You</a></p>-->
-<!--            <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>-->
-<!--        </footer>-->
+        <!--        <footer class="info">-->
+        <!--            <p>Double-click to edit a todo</p>-->
+        <!--            <p>Written by <a href="http://evanyou.me">Evan You</a></p>-->
+        <!--            <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>-->
+        <!--        </footer>-->
     </div>
 </template>
 
@@ -41,9 +46,10 @@
     export default {
         data() {
             return {
-                beforeEditCache:null,
-                editTodo:null,
-                newTodo:"",
+                beforeEditCache: null,
+                editTodo: null,
+                newTodo: "",
+                filter: "all",
                 todos: [{
                     id: 0,
                     title: '代办 一',
@@ -62,7 +68,7 @@
                 }]
             }
         },
-        methods:{
+        methods: {
             'editingLabel': function (data, event) {
                 //When click on the label,call the edit label function
                 //Save the former text
@@ -70,17 +76,16 @@
                 this.editTodo = data.index
                 //Focus the input
             },
-            'finishEditLabel': function(event) {
+            'finishEditLabel': function (event) {
                 this.editTodo = null
                 event.target.parentElement.classList.remove('editing')
             },
-            'cancelEditLabel': function(data, event) {
+            'cancelEditLabel': function (data, event) {
                 this.todos[data.index].title = this.beforeEditCache
                 this.finishEditLabel(event)
             },
-            'addTodo': function(event) {
-                if( this.newTodo.trim().length !== 0)
-                {
+            'addTodo': function (event) {
+                if (this.newTodo.trim().length !== 0) {
                     this.todos.push({
                             id: this.todos.length + 1,
                             title: this.newTodo,
@@ -89,25 +94,28 @@
                         }
                     )
                     this.newTodo = ""
-                }else{
+                } else {
                     alert('You mush enter a task title')
                 }
             },
-            'deleteTodo': function(data, event){
+            'deleteTodo': function (data, event) {
                 this.todos.splice(data.index, 1)
 
             },
-            'deleteAllCompleted': function(event){
+            'deleteAllCompleted': function (event) {
                 this.todos.forEach(item => {
-                    if ( item.completed == true ){
+                    if (item.completed === true) {
                         this.todos.splice(this.todos.findIndex(item => item.id === item.id), 1)
                     }
                 })
-            }
+            },
+            'changeFilter': function (data) {
+                this.filter = data
+            },
         },
         directives: {
-            'todo-focus': function(el, binding) {
-                if(binding.value){
+            'todo-focus': function (el, binding) {
+                if (binding.value) {
                     el.focus();
                 }
             },
@@ -117,7 +125,7 @@
                 get: function () {
                     return this.todos.every(data => data.completed)
                 },
-                set: function(newValue) {
+                set: function (newValue) {
                     this.todos.forEach(item => {
                         item.completed = newValue
                     })
@@ -127,13 +135,27 @@
                 get: function () {
                     let todoCount = 0
                     this.todos.forEach(item => {
-                        if ( item.completed == false ){
+                        if (item.completed === false) {
                             todoCount++
                         }
                     })
                     return todoCount
                 },
-            }
+            },
+            showTodo: {
+                get: function () {
+                    let filter = this.filter
+                    return this.todos.filter(function (item) {
+                        if ( filter === 'completed') {
+                            return item.completed === true
+                        }else if( filter === 'active'){
+                            return item.completed === false
+                        }else{
+                            return true
+                        }
+                    })
+                }
+            },
         }
     }
 </script>
