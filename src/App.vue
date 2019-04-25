@@ -2,7 +2,7 @@
     <div class="todoapp">
         <header class="header">
             <h1>todos</h1>
-            <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?" @keyup.enter="addTodo">
+            <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?" @keyup.enter="addTodo" v-model="newTodo">
         </header>
         <section class="main">
             <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
@@ -12,7 +12,7 @@
                     <div class="view">
                         <input class="toggle" type="checkbox" v-model="item.completed">
                         <label @dblclick="editingLabel({'index': index}, $event)">{{ item.title }}</label>
-                        <button class="destroy"></button>
+                        <button class="destroy" @click="deleteTodo({'index': index}, $event)"></button>
                     </div>
                     <input v-todo-focus class="edit" type="text" v-model="item.title" @blur.prevent="finishEditLabel" @keyup.enter="finishEditLabel" @keyup.esc="cancelEditLabel({'index': index}, $event)">
                 </li>
@@ -20,14 +20,14 @@
         </section>
         <footer class="footer">
             <span class="todo-count">
-                <strong>3</strong> todo
+                <strong>{{allTodo}}</strong> todo
             </span>
             <ul class="filters">
                 <li><a href="#/all" class="selected">All</a></li>
                 <li><a href="#/active">Active</a></li>
                 <li><a href="#/completed">Completed</a></li>
             </ul>
-            <button class="clear-completed">Clear completed</button>
+            <button class="clear-completed" @click="deleteAllCompleted">Clear completed</button>
         </footer>
 <!--        <footer class="info">-->
 <!--            <p>Double-click to edit a todo</p>-->
@@ -43,6 +43,7 @@
             return {
                 beforeEditCache:null,
                 editTodo:null,
+                newTodo:"",
                 todos: [{
                     id: 0,
                     title: '代办 一',
@@ -78,19 +79,30 @@
                 this.finishEditLabel(event)
             },
             'addTodo': function(event) {
-                if( event.target.value.trim().length !== 0)
+                if( this.newTodo.trim().length !== 0)
                 {
                     this.todos.push({
                             id: this.todos.length + 1,
-                            title: event.target.value,
+                            title: this.newTodo,
                             completed: false,
                             editing: false,
                         }
                     )
-                    event.target.value = ""
+                    this.newTodo = ""
                 }else{
                     alert('You mush enter a task title')
                 }
+            },
+            'deleteTodo': function(data, event){
+                this.todos.splice(data.index, 1)
+
+            },
+            'deleteAllCompleted': function(event){
+                this.todos.forEach(item => {
+                    if ( item.completed == true ){
+                        this.todos.splice(this.todos.findIndex(item => item.id === item.id), 1)
+                    }
+                })
             }
         },
         directives: {
@@ -110,6 +122,17 @@
                         item.completed = newValue
                     })
                 }
+            },
+            allTodo: {
+                get: function () {
+                    let todoCount = 0
+                    this.todos.forEach(item => {
+                        if ( item.completed == false ){
+                            todoCount++
+                        }
+                    })
+                    return todoCount
+                },
             }
         }
     }
