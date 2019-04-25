@@ -2,7 +2,7 @@
     <div class="todoapp">
         <header class="header">
             <h1>todos</h1>
-            <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?">
+            <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?" @keyup.enter="addTodo">
         </header>
         <section class="main">
             <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
@@ -44,17 +44,17 @@
                 beforeEditCache:null,
                 editTodo:null,
                 todos: [{
-                    // id: 0,
+                    id: 0,
                     title: '代办 一',
                     completed: true,
                     editing: false,
                 }, {
-                    // id: 1,
+                    id: 1,
                     title: '代办 二',
                     completed: false,
                     editing: true,
                 }, {
-                    // id: 2,
+                    id: 2,
                     title: '代办 三',
                     completed: false,
                     editing: false,
@@ -76,6 +76,21 @@
             'cancelEditLabel': function(data, event) {
                 this.todos[data.index].title = this.beforeEditCache
                 this.finishEditLabel(event)
+            },
+            'addTodo': function(event) {
+                if( event.target.value.trim().length !== 0)
+                {
+                    this.todos.push({
+                            id: this.todos.length + 1,
+                            title: event.target.value,
+                            completed: false,
+                            editing: false,
+                        }
+                    )
+                    event.target.value = ""
+                }else{
+                    alert('You mush enter a task title')
+                }
             }
         },
         directives: {
