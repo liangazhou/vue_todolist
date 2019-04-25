@@ -5,12 +5,12 @@
             <input class="new-todo" autofocus autocomplete="off" placeholder="What needs to be done?">
         </header>
         <section class="main">
-            <input id="toggle-all" class="toggle-all" type="checkbox">
+            <input id="toggle-all" class="toggle-all" type="checkbox" v-model="allDone">
             <label for="toggle-all">Mark all as complete</label>
             <ul class="todo-list">
                 <li class="todo" v-for="(item, index) in todos" :key="index" :class="{completed: item.completed, editing: editTodo == index}"><!--TODO-->
                     <div class="view">
-                        <input class="toggle" type="checkbox">
+                        <input class="toggle" type="checkbox" v-model="item.completed">
                         <label @dblclick="editingLabel({'index': index}, $event)">{{ item.title }}</label>
                         <button class="destroy"></button>
                     </div>
@@ -84,6 +84,18 @@
                     el.focus();
                 }
             },
+        },
+        computed: {
+            allDone: {
+                get: function () {
+                    return this.todos.every(data => data.completed)
+                },
+                set: function(newValue) {
+                    this.todos.forEach(item => {
+                        item.completed = newValue
+                    })
+                }
+            }
         }
     }
 </script>
