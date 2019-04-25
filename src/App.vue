@@ -14,7 +14,7 @@
                         <label @dblclick="editingLabel({'index': index}, $event)">{{ item.title }}</label>
                         <button class="destroy"></button>
                     </div>
-                    <input v-todo-focus class="edit" type="text" v-model="item.title" @blur.prevent="finishEditLabel" @keyup.enter="finishEditLabel" @keyup.esc="cancelEditLabel">
+                    <input v-todo-focus class="edit" type="text" v-model="item.title" @blur.prevent="finishEditLabel" @keyup.enter="finishEditLabel" @keyup.esc="cancelEditLabel({'index': index}, $event)">
                 </li>
             </ul>
         </section>
@@ -73,9 +73,9 @@
                 this.editTodo = null
                 event.target.parentElement.classList.remove('editing')
             },
-            'cancelEditLabel': function(event) {
-                //FIXME: if cancel then press enter, the value will remain the former
-                event.target.value = this.beforeEditCache
+            'cancelEditLabel': function(data, event) {
+                this.todos[data.index].title = this.beforeEditCache
+                this.finishEditLabel(event)
             }
         },
         directives: {
