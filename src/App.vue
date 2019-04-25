@@ -8,13 +8,13 @@
             <input id="toggle-all" class="toggle-all" type="checkbox">
             <label for="toggle-all">Mark all as complete</label>
             <ul class="todo-list">
-                <li class="todo" v-for="item in todos" :key="item.index" :class="{completed: item.completed}"><!--TODO-->
+                <li class="todo" v-for="(item, index) in todos" :key="index" :class="{completed: item.completed, editing: editTodo == index}"><!--TODO-->
                     <div class="view">
                         <input class="toggle" type="checkbox">
-                        <label>{{ item.title }}</label>
+                        <label @dblclick="editingLabel({'index': index}, $event)">{{ item.title }}</label>
                         <button class="destroy"></button>
                     </div>
-                    <input class="edit" type="text">
+                    <input v-todo-focus class="edit" type="text" v-model="item.title" @blur.prevent="finishEditLabel" @keyup.enter="finishEditLabel" @keyup.esc="cancelEditLabel">
                 </li>
             </ul>
         </section>
@@ -41,20 +41,49 @@
     export default {
         data() {
             return {
+                beforeEditCache:null,
+                editTodo:null,
                 todos: [{
+                    // id: 0,
                     title: '代办 一',
                     completed: true,
                     editing: false,
                 }, {
+                    // id: 1,
                     title: '代办 二',
                     completed: false,
                     editing: true,
                 }, {
+                    // id: 2,
                     title: '代办 三',
                     completed: false,
                     editing: false,
                 }]
             }
+        },
+        methods:{
+            'editingLabel': function (data, event) {
+                //When click on the label,call the edit label function
+                //Save the former text
+                this.beforeEditCache = event.target.innerText
+                this.editTodo = data.index
+                //Focus the input
+            },
+            'finishEditLabel': function(event) {
+                this.editTodo = null
+                event.target.parentElement.classList.remove('editing')
+            },
+            'cancelEditLabel': function(event) {
+                //FIXME: if cancel then press enter, the value will remain the former
+                event.target.value = this.beforeEditCache
+            }
+        },
+        directives: {
+            'todo-focus': function(el, binding) {
+                if(binding.value){
+                    el.focus();
+                }
+            },
         }
     }
 </script>
