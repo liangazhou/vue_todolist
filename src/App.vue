@@ -2,7 +2,7 @@
     <div class="todoapp">
         <the-header v-bind:todos.sync="todos"></the-header>
         <todo-list v-bind:todos.sync="todos" v-bind:filter.sync="filter"></todo-list>
-        <the-footer v-bind:todos.sync="todos" v-bind:filter.sync="filter" v-on:changeFilter="changeFilter"></the-footer>
+        <the-footer v-bind:todos.sync="todos" v-bind:filter.sync="filter"></the-footer>
     </div>
 </template>
 
@@ -34,11 +34,6 @@
                 }]
             }
         },
-        methods: {
-            changeFilter: function(val){
-                this.filter = val
-            }
-        }
     }
 </script>
 

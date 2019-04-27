@@ -27,7 +27,7 @@
                 })
             },
             'changeFilter': function (data) {
-                this.$emit('changeFilter',data);
+                this.$emit('update:filter', data);
             },
         },
         computed:{
