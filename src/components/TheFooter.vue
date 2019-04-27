@@ -4,11 +4,9 @@
                 <strong>{{allTodo}}</strong> todo
             </span>
         <ul class="filters">
-            <li><a href="#/all" :class="{selected: filter === 'all'}" @click="changeFilter('all')">All</a></li>
-            <li><a href="#/active" :class="{selected: filter === 'active'}"
-                   @click="changeFilter('active')">Active</a></li>
-            <li><a href="#/completed" :class="{selected: filter === 'completed'}"
-                   @click="changeFilter('completed')">Completed</a></li>
+            <li><router-link :to="{name:'Filter', path: '/:id', params: {id: 'all'} }" :class="{selected: filter === 'all'}" @click="changeFilter('all')">All</router-link></li>
+            <li><router-link :to="{name:'Filter', path: '/:id', params: {id: 'active'} }" :class="{selected: filter === 'active'}" @click="changeFilter('active')">Active</router-link></li>
+            <li><router-link :to="{name:'Filter', path: '/:id', params: {id: 'completed'} }" :class="{selected: filter === 'completed'}" @click="changeFilter('completed')">Completed</router-link></li>
         </ul>
         <button class="clear-completed" @click="deleteAllCompleted">Clear completed</button>
     </footer>
