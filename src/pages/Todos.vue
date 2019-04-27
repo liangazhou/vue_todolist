@@ -15,30 +15,17 @@
         components: {TheHeader, TodoList, TheFooter},
         data() {
             return {
-                // filter: "all",
-                todos: [{
-                    id: 0,
-                    title: '代办 一',
-                    completed: true,
-                    editing: false,
-                }, {
-                    id: 1,
-                    title: '代办 二',
-                    completed: false,
-                    editing: true,
-                }, {
-                    id: 2,
-                    title: '代办 三',
-                    completed: false,
-                    editing: false,
-                }]
+                todos: this.$store.state.todos,
             }
         },
         computed:{
             filter: {
                 get: function () {
                     return this.$route.params.id
-                }
+                },
+                set: function (data) {
+                    this.$store.state.filter = data
+                },
             }
         }
     }

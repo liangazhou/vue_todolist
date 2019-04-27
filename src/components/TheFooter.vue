@@ -18,11 +18,7 @@
         props: ['todos', 'filter'],
         methods:{
             'deleteAllCompleted': function (event) {
-                this.todos.forEach(item => {
-                    if (item.completed === true) {
-                        this.todos.splice(this.todos.indexOf(item), 1)
-                    }
-                })
+                this.$store.dispatch("setAllCompleted")
             },
             'changeFilter': function (data) {
                 this.$emit('update:filter', data);
@@ -31,13 +27,7 @@
         computed:{
             allTodo: {
                 get: function () {
-                    let todoCount = 0;
-                    this.todos.forEach(item => {
-                        if (item.completed === false) {
-                            todoCount++
-                        }
-                    });
-                    return todoCount
+                    return this.$store.getters.todosCount
                 },
             },
         }

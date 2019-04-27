@@ -4,7 +4,7 @@ import "./assets/index.css"
 import "./assets/base.css"
 import VueRouter from 'vue-router'
 import Todos from './pages/Todos'
-
+import store from './store'
 
 Vue.config.productionTip = false
 
@@ -26,6 +26,7 @@ const router = new VueRouter({
 new Vue({
   render: h => h(App),
   router,
+  store,
 }).$mount('#app')
 
 export default router
